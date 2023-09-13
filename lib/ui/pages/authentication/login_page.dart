@@ -21,6 +21,7 @@ class _LoginPageState extends State<LoginPage> {
     logInfo('_login $theEmail $thePassword');
     try {
       await authenticationController.login(theEmail, thePassword);
+      await authenticationController.checkIsFirstTime();
     } catch (err) {
       Get.snackbar(
         "Login",

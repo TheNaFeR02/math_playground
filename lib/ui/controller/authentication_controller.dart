@@ -5,8 +5,10 @@ import 'package:loggy/loggy.dart';
 
 class AuthenticationController extends GetxController {
   final logged = false.obs;
+  final firstTime = true.obs;
 
   bool get isLogged => logged.value;
+  bool get isFirstTime => firstTime.value;
 
   Future<void> login(email, password) async {
     final AuthenticationUseCase authentication = Get.find();
@@ -23,5 +25,12 @@ class AuthenticationController extends GetxController {
 
   Future<void> logOut() async {
     logged.value = false;
+  }
+
+  // check if logging for the first time
+  Future<void> checkIsFirstTime() async {
+    final AuthenticationUseCase authentication = Get.find();
+    //change firstTime value
+    firstTime.value = await authentication.checkIsFirstTime();
   }
 }

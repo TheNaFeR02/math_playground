@@ -4,7 +4,7 @@ import '../../../domain/models/user.dart';
 import 'package:http/http.dart' as http;
 
 class UserDataSource {
-  final String apiKey = 'UVP1Mi';
+  final String apiKey = 'ZtyTgh';
 
   Future<List<User>> getUsers() async {
     List<User> users = [];
@@ -96,6 +96,32 @@ class UserDataSource {
     if (response.statusCode == 200) {
       logInfo('simulateProcess access ok');
       return Future.value(true);
+    } else {
+      logError("Got error code ${response.statusCode}");
+      return Future.error('Error code ${response.statusCode}');
+    }
+  }
+
+  Future<bool> checkIsFirstTime() async {
+    List<User> users = [];
+    var request = Uri.parse("https://retoolapi.dev/$apiKey/data")
+        .resolveUri(Uri(queryParameters: {
+      "format": 'json',
+    }));
+
+    var response = await http.get(request);
+
+    if (response.statusCode == 200) {
+      //logInfo(response.body);
+      final data = jsonDecode(response.body);
+
+      users = List<User>.from(data.map((x) => User.fromJson(x)));
+      final firstTime = users[1].firstTime;
+      print(firstTime);
+      print("usuarios: ${users} ---------------------");
+      print("El Usuario: ${users[1]} ----------------");
+      // [UPDATE] call a function to make a POST and change the firstTime to false.
+      return firstTime ? Future.value(true) : Future.value(false);
     } else {
       logError("Got error code ${response.statusCode}");
       return Future.error('Error code ${response.statusCode}');

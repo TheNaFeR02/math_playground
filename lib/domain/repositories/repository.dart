@@ -40,4 +40,8 @@ class Repository {
 
   Future<bool> simulateProcess() async =>
       await _userDatatasource.simulateProcess(_baseUrl, token);
+
+  // check if logging for the first time
+  Future<bool> checkIsFirstTime() async =>
+      await _userDatatasource.checkIsFirstTime();
 }

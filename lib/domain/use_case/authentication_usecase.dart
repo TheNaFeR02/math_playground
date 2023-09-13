@@ -10,5 +10,7 @@ class AuthenticationUseCase {
   Future<bool> signUp(String email, String password) async =>
       await _repository.signUp(email, password);
 
+  Future<bool> checkIsFirstTime() async => await _repository.checkIsFirstTime();
+
   Future<bool> logOut() async => await _repository.logOut();
-}
+} 
