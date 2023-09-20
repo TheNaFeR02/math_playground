@@ -5,7 +5,7 @@ import 'package:http/http.dart' as http;
 class AuthenticationDatatasource {
   Future<String> login(String baseUrl, String email, String password) async {
     final response = await http.post(
-      Uri.parse("$baseUrl/login"),
+      Uri.parse("$baseUrl/login/"),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
@@ -19,7 +19,8 @@ class AuthenticationDatatasource {
     if (response.statusCode == 200) {
       logInfo(response.body);
       final data = jsonDecode(response.body);
-      return Future.value(data['access_token']);
+      print("------------------>${data['key']}");
+      return Future.value(data['key']);
     } else {
       logError("Got error code ${response.statusCode}");
       return Future.error('Error code ${response.statusCode}');
@@ -27,17 +28,20 @@ class AuthenticationDatatasource {
   }
 
   Future<bool> signUp(String baseUrl, String email, String password) async {
+    final Map<String, dynamic> requestData = {
+      "username": email,
+      "password1": password,
+      "password2": password,
+    };
+
+    print(jsonEncode(requestData));
+
     final response = await http.post(
-      Uri.parse("$baseUrl/register"),
+      Uri.parse("${baseUrl}/register/"),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
-      body: jsonEncode(<String, String>{
-        "username": email,
-        "first_name": email,
-        "last_name": email,
-        "password": password,
-      }),
+      body: jsonEncode(requestData),
     );
 
     logInfo(response.statusCode);
@@ -53,6 +57,4 @@ class AuthenticationDatatasource {
   Future<bool> logOut() async {
     return Future.value(true);
   }
-
-  
 }

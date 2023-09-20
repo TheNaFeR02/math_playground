@@ -13,15 +13,15 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   final _formKey = GlobalKey<FormState>();
-  final controllerEmail = TextEditingController(text: 'a@a.com');
-  final controllerPassword = TextEditingController(text: '123456');
+  final controllerEmail = TextEditingController(text: 'fernando');
+  final controllerPassword = TextEditingController(text: 'Uninorte1');
   AuthenticationController authenticationController = Get.find();
 
   _login(theEmail, thePassword) async {
     logInfo('_login $theEmail $thePassword');
     try {
       await authenticationController.login(theEmail, thePassword);
-      await authenticationController.checkIsFirstTime();
+      // await authenticationController.checkIsFirstTime();
     } catch (err) {
       Get.snackbar(
         "Login",
@@ -61,8 +61,9 @@ class _LoginPageState extends State<LoginPage> {
                       validator: (String? value) {
                         if (value!.isEmpty) {
                           return "Enter email";
-                        } else if (!value.contains('@')) {
-                          return "Enter valid email address";
+                          // } else if (!value.contains('@')) {
+                          //   return "Enter valid email address";
+                          // }
                         }
                         return null;
                       },

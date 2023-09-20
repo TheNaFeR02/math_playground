@@ -12,8 +12,8 @@ class SignUp extends StatefulWidget {
 
 class _FirebaseSignUpState extends State<SignUp> {
   final _formKey = GlobalKey<FormState>();
-  final controllerEmail = TextEditingController(text: 'a@a.com');
-  final controllerPassword = TextEditingController(text: '123456');
+  final controllerEmail = TextEditingController(text: 'user2');
+  final controllerPassword = TextEditingController(text: 'complexpassword123');
   AuthenticationController authenticationController = Get.find();
 
   _signup(theEmail, thePassword) async {
@@ -65,9 +65,10 @@ class _FirebaseSignUpState extends State<SignUp> {
                             if (value == null || value.isEmpty) {
                               logError('SignUp validation empty email');
                               return "Enter email";
-                            } else if (!value.contains('@')) {
-                              logError('SignUp validation invalid email');
-                              return "Enter valid email address";
+                              // } else if (!value.contains('@')) {
+                              //   logError('SignUp validation invalid email');
+                              //   return "Enter valid email address";
+                              // }
                             }
                             return null;
                           },

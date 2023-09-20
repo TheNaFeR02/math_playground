@@ -9,17 +9,22 @@ class UserUseCase {
 
   UserUseCase();
 
-  Future<List<User>> getUsers() async {
-    logInfo("Getting users  from UseCase");
-    return await _repository.getUsers();
+  Future<User> getUser() async {
+    logInfo("Getting users details from repository");
+    return await _repository.getUser();
   }
 
-  Future<void> addUser(User user) async => await _repository.addUser(user);
+  // Future<List<User>> getUsers() async {
+  //   logInfo("Getting users  from UseCase");
+  //   return await _repository.getUsers();
+  // }
 
-  Future<void> updateUser(User user) async =>
-      await _repository.updateUser(user);
+  // Future<void> addUser(User user) async => await _repository.addUser(user);
 
-  deleteUser(int id) async => await _repository.deleteUser(id);
+  // Future<void> updateUser(User user) async =>
+  //     await _repository.updateUser(user);
 
-  simulateProcess() async => await _repository.simulateProcess();
+  // deleteUser(int id) async => await _repository.deleteUser(id);
+
+  // simulateProcess() async => await _repository.simulateProcess();
 }
