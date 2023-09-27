@@ -31,7 +31,7 @@ class UserDataSource {
         user.username = userData['username'];
         user.email = userData['email'];
         final operationList = userData['operation_level'];
-        for(final operation in operationList){
+        for (final operation in operationList) {
           user.operationLevel.add(OperationLevel(
             level: operation['level'],
             name: operation['name'],
@@ -48,6 +48,29 @@ class UserDataSource {
     } else {
       logError("Got error code ${response.statusCode}");
       return Future.error('Error code ${response.statusCode}');
+    }
+  }
+
+  updateUserLevel(
+      String baseUrl, String token, int newLevel, int userId) async {
+    // User user = User(username: '', email: '', operationLevel: []);
+
+    final response =
+        await http.put(Uri.parse("$baseUrl/operation_level/addition/"),
+            headers: <String, String>{
+              'Content-Type': 'application/json; charset=UTF-8',
+              'Authorization': 'Token $token'
+            },
+            body: jsonEncode({
+              "name": "addition", "level": newLevel, "user": "fernando"
+            }));
+
+    // Check the response status code
+    if (response.statusCode == 200) {
+      print('Operation level updated successfully');
+    } else {
+      print('Error updating operation level: ${response.statusCode}');
+      print('Response body: ${response.body}');
     }
   }
 

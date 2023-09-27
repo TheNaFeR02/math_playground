@@ -116,4 +116,19 @@ class MathUseCase {
       return false;
     }
   }
+
+  // did levelup?
+  int checkPerformance(int score, int questions) {
+    final double percentage = score / questions;
+    if (percentage >= 0.8) {
+      // Level up
+      return 1;
+    } else if (percentage <= 0.2) {
+      // Level down
+      return -1;
+    } else {
+      // Stay at the same level
+      return 0;
+    }
+  }
 }

@@ -39,6 +39,10 @@ class Repository {
 
   Future<bool> logOut() async => await _authenticationDataSource.logOut();
 
+  updateUserLevel(int newLevel, int userId) async {
+    await _userDataSource.updateUserLevel(_baseUrl, token, newLevel, userId);
+  }
+
   // Future<List<User>> getUsers() async => await _userDatatasource.getUsers();
 
   // Future<bool> addUser(User user) async =>

@@ -34,7 +34,8 @@ class _ProblemsPageState extends State<ProblemsPage> {
     MathController mathController = Get.find();
     return Scaffold(
       appBar: AppBar(
-        title: Obx(() => Text('${mathController.score}/6')),
+        title: Obx(() => Text(
+            '${mathController.score}/6 | Session: ${mathController.session} | Time: ${mathController.time} | LevelAdd:')),
       ),
       // One centered colum Widget with 3 rows,
       body: const Center(
@@ -128,6 +129,7 @@ class _CalculatorWidgetState extends State<CalculatorWidget> {
         // Handle the '=' button press
         // You can implement logic here to evaluate the expression and update the response accordingly.
         mathController.checkAnswer(input);
+        input = '';
       } else {
         // Concatenate the input when a number or operator button is pressed
         input += buttonText;

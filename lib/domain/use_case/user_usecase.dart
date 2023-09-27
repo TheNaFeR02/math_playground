@@ -14,6 +14,11 @@ class UserUseCase {
     return await _repository.getUser();
   }
 
+  updateUserLevel(int newLevel, userId) async {
+    logInfo("Updating User Level");
+    await _repository.updateUserLevel(newLevel, userId);
+  }
+
   // Future<List<User>> getUsers() async {
   //   logInfo("Getting users  from UseCase");
   //   return await _repository.getUsers();
