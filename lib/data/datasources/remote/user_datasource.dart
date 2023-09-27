@@ -51,19 +51,19 @@ class UserDataSource {
     }
   }
 
-  updateUserLevel(
-      String baseUrl, String token, int newLevel, int userId) async {
+  Future<void> updateUserLevel(String baseUrl, String token, int newLevel,
+      int userId, String operationSession) async {
     // User user = User(username: '', email: '', operationLevel: []);
-
-    final response =
-        await http.put(Uri.parse("$baseUrl/operation_level/addition/"),
-            headers: <String, String>{
-              'Content-Type': 'application/json; charset=UTF-8',
-              'Authorization': 'Token $token'
-            },
-            body: jsonEncode({
-              "name": "addition", "level": newLevel, "user": "fernando"
-            }));
+    // print("operacion de la $sesionoperationSession");
+    print("put:$operationSession");
+    final response = await http.put(
+        Uri.parse("$baseUrl/operation_level/$operationSession/"),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Authorization': 'Token $token'
+        },
+        body: jsonEncode(
+            {"name": operationSession, "level": newLevel, "user": "fernando"}));
 
     // Check the response status code
     if (response.statusCode == 200) {

@@ -5,7 +5,9 @@ import 'package:math_playground/ui/controller/math_controller.dart';
 import 'package:math_playground/ui/controller/user_controller.dart';
 
 class ProblemsPage extends StatefulWidget {
-  const ProblemsPage({super.key});
+  const ProblemsPage({super.key, required this.operationSession});
+
+  final String operationSession;
 
   @override
   State<ProblemsPage> createState() => _ProblemsPageState();
@@ -21,7 +23,7 @@ class _ProblemsPageState extends State<ProblemsPage> {
   Future<void> initialize() async {
     await getInfo(); // Wait for user data to be fetched
     MathController mathController = Get.find();
-    mathController.startSession();
+    mathController.startSession(widget.operationSession);
   }
 
   Future<void> getInfo() async {
@@ -39,7 +41,7 @@ class _ProblemsPageState extends State<ProblemsPage> {
       ),
       // One centered colum Widget with 3 rows,
       body: const Center(
-        child: CalculatorWidget(),
+        child: CalculatorWidget(), 
       ),
     );
   }
@@ -128,7 +130,7 @@ class _CalculatorWidgetState extends State<CalculatorWidget> {
       } else if (buttonText == '=') {
         // Handle the '=' button press
         // You can implement logic here to evaluate the expression and update the response accordingly.
-        mathController.checkAnswer(input);
+        mathController.checkAnswer(input, );
         input = '';
       } else {
         // Concatenate the input when a number or operator button is pressed

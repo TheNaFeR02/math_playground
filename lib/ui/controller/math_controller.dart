@@ -13,21 +13,29 @@ class MathController extends GetxController {
   final time = 0.obs;
   final _operation = ''.obs;
   final questions = <String>[].obs;
+  final _operationSession = ''.obs;
 
   String get operation => _operation.value;
+  String get operationSession => _operationSession.value;
 
-  Future<void> startSession() async {
+  Future<void> startSession(String operationSession) async {
     score.value = 0;
     questionNumber.value = 0;
     time.value = 0;
 
+    //run the time
+    // startTime();
+
     print("The session started");
     final List<OperationLevel> userLevel = userController.user.operationLevel;
     print("${userLevel} here!");
-    questions.value = mathUseCase.startSession(userLevel);
+    questions.value = mathUseCase.startSession(userLevel,
+        operationSession); // Create the list of problems and pass it to the controller.
+    _operationSession.value = operationSession; // Set the operation of the current session.
 
     print(questions);
     _operation.value = questions[questionNumber.value];
+    questionNumber.value++;
     update();
   }
 
@@ -48,17 +56,35 @@ class MathController extends GetxController {
       int levelUpdate =
           mathUseCase.checkPerformance(score.value, questions.length);
 
+      int indexOperation = -1;
+      print(operationSession);
+      switch (_operationSession.value) {
+        case 'addition':
+          indexOperation = 0;
+          break;
+        case 'subtraction':
+          indexOperation = 1;
+          break;
+        case 'multiplication':
+          indexOperation = 2;
+          break;
+        case 'division':
+          indexOperation = 3;
+          break;
+      }
+      print('index operation: $indexOperation');
       // Update user level based on performance.
       if (levelUpdate != 0) {
-        if (!(userController.user.operationLevel[0].level == 3 &&
+        if (!(userController.user.operationLevel[indexOperation].level == 3 &&
                 levelUpdate == 1) &&
-            !(userController.user.operationLevel[0].level == 1 &&
+            !(userController.user.operationLevel[indexOperation].level == 1 &&
                 levelUpdate == -1)) {
-          int newLevel = userController.user.operationLevel[0].level +
-              levelUpdate; // Update the level
+          int newLevel =
+              userController.user.operationLevel[indexOperation].level +
+                  levelUpdate; // Update the level
           print("level updated to $newLevel!!!!!");
           await userController.updateUserLevel(
-              newLevel, userController.user.id);
+              newLevel, userController.user.id, _operationSession.value);
         }
       }
 
@@ -66,9 +92,16 @@ class MathController extends GetxController {
       await userController.getUser();
 
       // Reset the session.
-      await startSession();
+      await startSession(_operationSession.value);
     }
 
     update();
   }
+
+  // void startTime() async {
+  //   Future.delayed(const Duration(seconds: 1), () {
+  //     time.value++;
+  //     startTime();
+  //   });
+  // }
 }

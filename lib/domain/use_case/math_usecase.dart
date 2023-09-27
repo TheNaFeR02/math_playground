@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:math_playground/domain/models/operation_level.dart';
 
 class MathUseCase {
@@ -10,29 +11,39 @@ class MathUseCase {
 
   MathUseCase();
 
-  List<String> startSession(List<OperationLevel> opLevel) {
+  List<String> startSession(
+      List<OperationLevel> opLevel, String operationSession) {
+    print(operationSession);
     // check if opLevel is empty
+    int indexOperation = 0;
+    switch (operationSession) {
+      case 'addition':
+        indexOperation = 0;
+        break;
+      case 'subtraction':
+        indexOperation = 1;
+        break;
+      case 'multiplication':
+        indexOperation = 2;
+        break;
+      case 'division':
+        indexOperation = 3;
+        break;
+    }
+
     if (opLevel.isNotEmpty) {
-      final String operation = opLevel[0].name;
-      final int level = opLevel[0].level;
+      final String operation = opLevel[indexOperation].name;
+      final int level = opLevel[indexOperation].level;
       switch (operation) {
         case 'addition':
           return createAdditionQuestions(level);
-          break;
         case 'subtraction':
-          print('subtraction');
-          return [];
-          break;
+          return createSubtractionQuestions(level);
         case 'multiplication':
-          print('multiplication');
-          return [];
-          break;
+          return createMultiplicationQuestions(level);
         case 'division':
-          print('division');
-          return [];
-          break;
+          return createDivisionQuestions(level);
         default:
-          print('default');
           return [];
       }
     }
@@ -70,6 +81,7 @@ class MathUseCase {
   }
 
   bool checkAnswer(String input, String operation) {
+    print(operation);
     print("input: $input");
     print("operation: $operation");
     try {
@@ -98,10 +110,10 @@ class MathUseCase {
         case '-':
           result = num1 - num2;
           break;
-        case '*':
+        case 'x':
           result = num1 * num2;
           break;
-        case '/':
+        case '÷':
           result = num1 / num2;
           break;
         default:
@@ -130,5 +142,94 @@ class MathUseCase {
       // Stay at the same level
       return 0;
     }
+  }
+
+  List<String> createSubtractionQuestions(int operationLevel) {
+    final Random random = Random();
+    List<String> questions = [];
+
+    for (int i = 0; i < 6; i++) {
+      int num1;
+      int num2;
+
+      if (operationLevel == 1) {
+        // Subtraction with one-digit numbers (0-9)
+        num1 = random.nextInt(10);
+        num2 = random.nextInt(10);
+      } else if (operationLevel == 2) {
+        // Subtraction with two-digit numbers (10-99)
+        num1 = random.nextInt(90) + 10;
+        num2 = random.nextInt(90) + 10;
+      } else if (operationLevel == 3) {
+        // Subtraction with three-digit numbers (100-999)
+        num1 = random.nextInt(900) + 100;
+        num2 = random.nextInt(900) + 100;
+      } else {
+        throw ArgumentError('Invalid operationLevel');
+      }
+
+      // Ensure num1 is greater than or equal to num2 to avoid negative results
+      if (num1 < num2) {
+        int temp = num1;
+        num1 = num2;
+        num2 = temp;
+      }
+
+      questions.add('$num1 - $num2');
+    }
+
+    return questions;
+  }
+
+  List<String> createMultiplicationQuestions(int operationLevel) {
+    final Random random = Random();
+    List<String> questions = [];
+
+    for (int i = 0; i < 6; i++) {
+      int num1;
+      int num2;
+
+      if (operationLevel == 1) {
+        // Multiplication with one-digit numbers (0-9)
+        num1 = random.nextInt(10);
+        num2 = random.nextInt(10);
+      } else if (operationLevel == 2) {
+        // Multiplication with two-digit numbers (10-99)
+        num1 = random.nextInt(90) + 10;
+        num2 = random.nextInt(90) + 10;
+      } else {
+        throw ArgumentError('Invalid operationLevel');
+      }
+
+      questions.add('$num1 x $num2');
+    }
+
+    return questions;
+  }
+
+  List<String> createDivisionQuestions(int operationLevel) {
+    final Random random = Random();
+    List<String> questions = [];
+
+    for (int i = 0; i < 6; i++) {
+      int dividend;
+      int divisor;
+
+      if (operationLevel == 1) {
+        // Division with one-digit numbers (0-9)
+        divisor = random.nextInt(9) + 1; // Avoid division by zero
+        dividend = divisor * (random.nextInt(9) + 1);
+      } else if (operationLevel == 2) {
+        // Division with two-digit numbers (10-99)
+        divisor = random.nextInt(90) + 10; // Avoid division by zero
+        dividend = divisor * (random.nextInt(9) + 1);
+      } else {
+        throw ArgumentError('Invalid operationLevel');
+      }
+
+      questions.add('$dividend ÷ $divisor');
+    }
+
+    return questions;
   }
 }
