@@ -14,9 +14,9 @@ class UserUseCase {
     return await _repository.getUser();
   }
 
-  Future<void> updateUserLevel(int newLevel, userId, String operationSession) async {
+  Future<void> updateUserLevel(int newLevel, String username, String operationSession) async {
     logInfo("Updating User Level");
-    await _repository.updateUserLevel(newLevel, userId, operationSession);
+    await _repository.updateUserLevel(newLevel, username, operationSession);
   }
 
   // Future<List<User>> getUsers() async {

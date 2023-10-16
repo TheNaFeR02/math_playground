@@ -28,24 +28,21 @@ class AuthenticationDatatasource {
   }
 
   Future<bool> signUp(String baseUrl, String email, String password) async {
-    final Map<String, dynamic> requestData = {
-      "username": email,
-      "password1": password,
-      "password2": password,
-    };
-
-    print(jsonEncode(requestData));
 
     final response = await http.post(
-      Uri.parse("${baseUrl}/register/"),
+      Uri.parse("$baseUrl/register/"),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
-      body: jsonEncode(requestData),
+      body: jsonEncode(<String, String>{
+        "username": email,
+        "password1": password,
+        "password2": password,
+      }),
     );
 
     logInfo(response.statusCode);
-    if (response.statusCode == 200) {
+    if (response.statusCode == 204) {
       //logInfo(response.body);
       return Future.value(true);
     } else {

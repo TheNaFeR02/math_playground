@@ -1,3 +1,6 @@
+import 'dart:async';
+
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:math_playground/domain/models/operation_level.dart';
@@ -14,6 +17,7 @@ class MathController extends GetxController {
   final _operation = ''.obs;
   final questions = <String>[].obs;
   final _operationSession = ''.obs;
+  Timer? timer;
 
   String get operation => _operation.value;
   String get operationSession => _operationSession.value;
@@ -23,15 +27,21 @@ class MathController extends GetxController {
     questionNumber.value = 0;
     time.value = 0;
 
-    //run the time
-    // startTime();
+    timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      final currentTime = time.value;
+      time.value = currentTime + 1;
+    });
 
     print("The session started");
     final List<OperationLevel> userLevel = userController.user.operationLevel;
-    print("${userLevel} here!");
+    print("$userLevel here!");
     questions.value = mathUseCase.startSession(userLevel,
         operationSession); // Create the list of problems and pass it to the controller.
-    _operationSession.value = operationSession; // Set the operation of the current session.
+    _operationSession.value =
+        operationSession; // Set the operation of the current session.
+
+    // Start a timer that updates the time every second
+    
 
     print(questions);
     _operation.value = questions[questionNumber.value];
@@ -44,17 +54,21 @@ class MathController extends GetxController {
       score.value++;
       print(score.value);
     }
+
     if (questionNumber.value < questions.length) {
       _operation.value = questions[questionNumber.value];
       questionNumber.value++;
     }
+
     // Check if the session is over.
     if (questionNumber.value == questions.length) {
       session.value += 1;
 
+      timer?.cancel(); // Stop the timer.
+
       // Check if the user perfomance is good enough to level up.
-      int levelUpdate =
-          mathUseCase.checkPerformance(score.value, questions.length);
+      int levelUpdate = mathUseCase.checkPerformance(
+          score.value, questions.length, time.value);
 
       int indexOperation = -1;
       print(operationSession);
@@ -84,7 +98,13 @@ class MathController extends GetxController {
                   levelUpdate; // Update the level
           print("level updated to $newLevel!!!!!");
           await userController.updateUserLevel(
-              newLevel, userController.user.id, _operationSession.value);
+              newLevel, userController.user.username, _operationSession.value);
+          Get.snackbar(
+            "Level Up! Your time was: ${time.value} seconds.",
+            'OK',
+            icon: const Icon(Icons.person, color: Colors.green),
+            snackPosition: SnackPosition.BOTTOM,
+          );
         }
       }
 

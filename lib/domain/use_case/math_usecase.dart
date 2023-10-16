@@ -130,10 +130,11 @@ class MathUseCase {
   }
 
   // did levelup?
-  int checkPerformance(int score, int questions) {
+  int checkPerformance(int score, int questions, int time) {
     final double percentage = score / questions;
-    if (percentage >= 0.8) {
+    if (percentage >= 0.8 && time <= 30) {
       // Level up
+      print("Te demoraste:" + time.toString() + "Pasaste de Nivel!");
       return 1;
     } else if (percentage <= 0.2) {
       // Level down

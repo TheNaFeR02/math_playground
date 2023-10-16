@@ -21,9 +21,9 @@ class UserController extends GetxController {
     update();
   }
 
-  Future<void> updateUserLevel(int newLevel, userId, String operationSession) async{
+  Future<void> updateUserLevel(int newLevel, String username, String operationSession) async{
     logInfo("Updating User Level");
-    await userUseCase.updateUserLevel(newLevel, userId, operationSession);
+    await userUseCase.updateUserLevel(newLevel, username, operationSession);
     getUser();
   }
 }
