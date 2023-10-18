@@ -129,6 +129,12 @@ class MathController extends GetxController {
         try {
           await updateUserLevelInLocalStorage(
               newLevel, _operationSession.value);
+
+          //level before
+          final int oldLevel =
+              userController.user.operationLevel[indexOperation].level;
+          await saveSessionInfoInLocalStorage(
+              _operationSession.value, newLevel, oldLevel, time.value, score.value);
         } catch (error) {
           logError('An error occurred: $error');
         }
@@ -192,5 +198,50 @@ class MathController extends GetxController {
       icon: const Icon(Icons.person, color: Colors.green),
       snackPosition: SnackPosition.BOTTOM,
     );
+  }
+
+  Future<void> saveSessionInfoInLocalStorage(
+      String operation, int newLevel, int oldLevel, int time, int score) async {
+    final SharedPreferences userInfo = await SharedPreferences.getInstance();
+
+    int maxSessions = 3; // Maximum number of sessions to store.
+    final sessionNumber = getNextSessionNumber(userInfo, maxSessions);
+
+    if (sessionNumber == maxSessions) {
+      // You've reached the maximum number of sessions, remove the oldest session
+      removeOldestSession(userInfo);
+    }
+
+    final sessionKeyPrefix = 'session$sessionNumber';
+
+    userInfo.setInt('$sessionKeyPrefix-time', time);
+    userInfo.setInt('$sessionKeyPrefix-newLevel', newLevel);
+    userInfo.setInt('$sessionKeyPrefix-oldLevel', oldLevel);
+    userInfo.setInt('$sessionKeyPrefix-score', score);
+    userInfo.setString('$sessionKeyPrefix-operation', operation);
+  }
+
+  int getNextSessionNumber(SharedPreferences userInfo, int maxSessions) {
+    int sessionNumber = 1;
+    while (sessionNumber <= maxSessions) {
+      if (!userInfo.containsKey('session$sessionNumber-time')) {
+        return sessionNumber;
+      }
+      sessionNumber++;
+    }
+    return 1; // Wrap around and overwrite the oldest session
+  }
+
+  void removeOldestSession(SharedPreferences userInfo) {
+    int sessionNumber = 1;
+    while (userInfo.containsKey('session$sessionNumber-time')) {
+      final sessionKeyPrefix = 'session$sessionNumber';
+      userInfo.remove('$sessionKeyPrefix-time');
+      userInfo.remove('$sessionKeyPrefix-newLevel');
+      userInfo.remove('$sessionKeyPrefix-oldLevel');
+      userInfo.remove('$sessionKeyPrefix-operation');
+      userInfo.remove('$sessionKeyPrefix-score');
+      sessionNumber++;
+    }
   }
 }

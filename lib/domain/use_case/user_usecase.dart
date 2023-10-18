@@ -23,6 +23,14 @@ class UserUseCase {
     await _repository.updateAllUserInfoInAPI(username, additionLevel, subtractionLevel, multiplicationLevel, divisionLevel);
   }
 
+  Future<void> updateStudentInfo(String username, String school, String grade, String datebirth) async {
+    await _repository.updateStudentInfo(username, school, grade, datebirth);
+  }
+
+  Future<void> updateUserSessionInfoInAPI(String username) async {
+    await _repository.updateUserSessionInfoInAPI(username);
+  }
+
   // Future<List<User>> getUsers() async {
   //   logInfo("Getting users  from UseCase");
   //   return await _repository.getUsers();

@@ -43,6 +43,7 @@ class UserController extends GetxController {
     SharedPreferences userInfo = await SharedPreferences.getInstance();
     userInfo.setString('username', _user.value.username);
     userInfo.setString('email', _user.value.email);
+    userInfo.setBool('firstTimeUser', false);
     for (var element in _user.value.operationLevel) {
       userInfo.setInt(element.name, element.level);
     }
@@ -63,7 +64,6 @@ class UserController extends GetxController {
       OperationLevel(name: 'division', level: divisionLevel)
     ];
 
-
     // _user.value.username = username;
     // _user.value.email = email;
     _user.value.operationLevel = operationLevelList;
@@ -71,7 +71,7 @@ class UserController extends GetxController {
     update();
   }
 
-  Future<void >updateAllUserInfoInAPI() async {
+  Future<void> updateAllUserInfoInAPI() async {
     SharedPreferences userInfo = await SharedPreferences.getInstance();
     final String username = userInfo.getString('username') ?? '';
     final int additionLevel = userInfo.getInt('addition') ?? 1;
@@ -79,7 +79,17 @@ class UserController extends GetxController {
     final int multiplicationLevel = userInfo.getInt('multiplication') ?? 1;
     final int divisionLevel = userInfo.getInt('division') ?? 1;
 
-    await userUseCase.updateAllUserInfoInAPI(username, additionLevel, subtractionLevel, multiplicationLevel, divisionLevel);
-
+    await userUseCase.updateAllUserInfoInAPI(username, additionLevel,
+        subtractionLevel, multiplicationLevel, divisionLevel);
   }
+
+  Future<void> updateStudentInfo(String school, String grade, String datebirth) async {
+    await userUseCase.updateStudentInfo(user.username, school, grade, datebirth);
+  }
+
+  Future<void> updateUserSessionInfoInAPI() async {
+    await userUseCase.updateUserSessionInfoInAPI(user.username);
+  }
+
+  
 }

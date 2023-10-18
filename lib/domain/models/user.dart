@@ -17,6 +17,10 @@ class User {
   List<OperationLevel> operationLevel;
   String? firstName;
   String? lastName;
+  bool? firstTimeUser;
+  int? grade;
+  String? school;
+  String? datebirth;
 
   String get name => '$firstName $lastName';
 

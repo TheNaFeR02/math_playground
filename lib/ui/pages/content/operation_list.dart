@@ -27,6 +27,8 @@ class _SelectOperationState extends State<SelectOperation> {
     try {
       await userController.getUserLocalInfo();
       await userController.updateAllUserInfoInAPI();
+
+      await userController.updateUserSessionInfoInAPI();
     } catch (e) {
       logError('Error al Obtener la información del Usuario', e);
     }

@@ -47,6 +47,14 @@ class Repository {
     await _userDataSource.updateAllUserInfoInAPI(_baseUrl, token, username, additionLevel, subtractionLevel, multiplicationLevel, divisionLevel);
   }
 
+  Future<void> updateStudentInfo(String username, String school, String grade, String datebirth)async {
+    await _userDataSource.updateStudentInfo(_baseUrl, token, username, school, grade, datebirth);
+  }
+
+  Future<void> updateUserSessionInfoInAPI(String username) async {
+    await _userDataSource.updateUserSessionInfoInAPI(_baseUrl, token, username);
+  }
+
   // Future<List<User>> getUsers() async => await _userDatatasource.getUsers();
 
   // Future<bool> addUser(User user) async =>
