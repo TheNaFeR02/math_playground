@@ -17,31 +17,34 @@ class _ProblemsPageState extends State<ProblemsPage> {
   @override
   void initState() {
     super.initState();
-    initialize();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      initialize();
+    });
   }
 
   Future<void> initialize() async {
-    await getInfo(); // Wait for user data to be fetched
-    MathController mathController = Get.find();
-    mathController.startSession(widget.operationSession);
-  }
+    // Obtain the latest information about the level of the user.
+    // UserController userController = Get.find();
+    // await userController.getUserLocalInfo();
 
-  Future<void> getInfo() async {
-    UserController userController = Get.find();
-    await userController.getUser(); // Wait for user data to be fetched
+    // Start the session. (It starts the session knowing the last level of the user.)
+    MathController mathController = Get.find();
+    await mathController.startSession(widget.operationSession);
   }
 
   @override
   Widget build(BuildContext context) {
     MathController mathController = Get.find();
+
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: Obx(() => Text(
             '${mathController.score}/6 | Session: ${mathController.session} | Time: ${mathController.time} | LevelAdd:')),
       ),
       // One centered colum Widget with 3 rows,
       body: const Center(
-        child: CalculatorWidget(), 
+        child: CalculatorWidget(),
       ),
     );
   }
@@ -55,11 +58,6 @@ class CalculatorWidget extends StatefulWidget {
 }
 
 class _CalculatorWidgetState extends State<CalculatorWidget> {
-  // set response(int value) {
-  //   setState(() {
-  //     response = value;
-  //   });
-  // }
   String input = '';
   MathController mathController = Get.find();
 
@@ -77,12 +75,13 @@ class _CalculatorWidgetState extends State<CalculatorWidget> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 Obx(() => Text(
-                      '${mathController.operation}',
-                      style: TextStyle(fontSize: 48.0),
+                      mathController.operation,
+                      style: const TextStyle(fontSize: 48.0),
                     )),
                 Text(
-                  '$input',
-                  style: TextStyle(fontSize: 32.0, fontWeight: FontWeight.bold),
+                  input,
+                  style: const TextStyle(
+                      fontSize: 32.0, fontWeight: FontWeight.bold),
                 ),
               ],
             ),
@@ -130,7 +129,9 @@ class _CalculatorWidgetState extends State<CalculatorWidget> {
       } else if (buttonText == '=') {
         // Handle the '=' button press
         // You can implement logic here to evaluate the expression and update the response accordingly.
-        mathController.checkAnswer(input, );
+        mathController.checkAnswer(
+          input,
+        );
         input = '';
       } else {
         // Concatenate the input when a number or operator button is pressed

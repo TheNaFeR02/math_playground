@@ -39,8 +39,12 @@ class Repository {
 
   Future<bool> logOut() async => await _authenticationDataSource.logOut();
 
-  Future<void> updateUserLevel(int newLevel, String username, String operationSession) async {
-    await _userDataSource.updateUserLevel(_baseUrl, token, newLevel, username, operationSession);
+  Future<void> updateUserLevel(int newLevel, String username) async {
+    await _userDataSource.updateUserLevel(_baseUrl, token, newLevel, username);
+  }
+
+  Future<void> updateAllUserInfoInAPI(String username, int additionLevel, int subtractionLevel, int multiplicationLevel, int divisionLevel) async {
+    await _userDataSource.updateAllUserInfoInAPI(_baseUrl, token, username, additionLevel, subtractionLevel, multiplicationLevel, divisionLevel);
   }
 
   // Future<List<User>> getUsers() async => await _userDatatasource.getUsers();

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:loggy/loggy.dart';
+import 'package:math_playground/ui/controller/user_controller.dart';
 import '../../controller/authentication_controller.dart';
 import 'signup.dart';
 
@@ -17,11 +18,18 @@ class _LoginPageState extends State<LoginPage> {
   final controllerPassword = TextEditingController(text: 'complexpassword123');
   AuthenticationController authenticationController = Get.find();
 
+  Future<void> getInfo() async {
+    UserController userController = Get.find();
+    await userController.getUser(); // Wait for user data to be fetched
+    await userController.setUserLocalInfo(); // Set user data locally
+  }
+
   _login(theEmail, thePassword) async {
     logInfo('_login $theEmail $thePassword');
     try {
       await authenticationController.login(theEmail, thePassword);
       // await authenticationController.checkIsFirstTime();
+      await getInfo();
     } catch (err) {
       Get.snackbar(
         "Login",

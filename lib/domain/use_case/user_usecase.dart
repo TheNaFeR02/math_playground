@@ -14,9 +14,13 @@ class UserUseCase {
     return await _repository.getUser();
   }
 
-  Future<void> updateUserLevel(int newLevel, String username, String operationSession) async {
+  Future<void> updateUserLevel(int newLevel, String username) async {
     logInfo("Updating User Level");
-    await _repository.updateUserLevel(newLevel, username, operationSession);
+    await _repository.updateUserLevel(newLevel, username);
+  }
+
+  Future<void> updateAllUserInfoInAPI(String username, int additionLevel, int subtractionLevel, int multiplicationLevel, int divisionLevel) async {
+    await _repository.updateAllUserInfoInAPI(username, additionLevel, subtractionLevel, multiplicationLevel, divisionLevel);
   }
 
   // Future<List<User>> getUsers() async {

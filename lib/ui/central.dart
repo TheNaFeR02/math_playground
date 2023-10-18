@@ -1,6 +1,7 @@
 import 'package:math_playground/ui/controller/authentication_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:math_playground/ui/menu.dart';
 import 'package:math_playground/ui/pages/content/operation_list.dart';
 import 'package:math_playground/ui/pages/content/problems_page.dart';
 import 'package:math_playground/ui/pages/content/profile_page.dart';
@@ -17,7 +18,7 @@ class Central extends StatelessWidget {
         
         // return const ProblemsPage(); // Show ProblemsPage for returning users.
         // return const ProfilePage();
-        return const SelectOperation();
+        return const Menu();
       } else {
         return const LoginPage(); // Show LoginPage for not logged in users.
       }

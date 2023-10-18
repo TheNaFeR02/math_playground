@@ -16,7 +16,11 @@ class ElevatedCard extends StatelessWidget {
           splashColor: Colors.blue.withAlpha(30),
           onTap: () {
             debugPrint('Card tapped.');
-            Get.to(ProblemsPage(operationSession: operationSession));
+            Get.to(
+              ProblemsPage(operationSession: operationSession),
+              popGesture:
+                  true, // Set this to true to replace the current route.
+            );
           },
           child: SizedBox(
             width: 300,

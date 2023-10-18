@@ -11,7 +11,6 @@ class UserDataSource {
   // -------------------------------------------------------------------------
 
   Future<User> getUser(String baseUrl, String token) async {
-    print("This is the TOKEN ----->$token");
     User user = User(username: '', email: '', operationLevel: []);
     final response = await http.get(
       Uri.parse("$baseUrl/user"),
@@ -21,12 +20,10 @@ class UserDataSource {
       },
     );
 
-    print("Antes de tomar los details------${response.body}");
     if (response.statusCode == 200) {
       final List<dynamic> data = jsonDecode(response.body);
       if (data.isNotEmpty) {
         final userData = data[0];
-        print(userData);
         user.id = userData['id'];
         user.username = userData['username'];
         user.email = userData['email'];
@@ -39,7 +36,6 @@ class UserDataSource {
         }
         user.firstName = userData['firstName'];
         user.lastName = userData['lastName'];
-        print("Se realizó bien la petición de getUser()--------------> $user");
         return Future.value(user);
       } else {
         // Handle the case where the response is an empty array
@@ -51,26 +47,147 @@ class UserDataSource {
     }
   }
 
-  Future<void> updateUserLevel(String baseUrl, String token, int newLevel,
-      String username, String operationSession) async {
+  Future<void> updateUserLevel(
+      String baseUrl, String token, int newLevel, String username) async {
     // User user = User(username: '', email: '', operationLevel: []);
     // print("operacion de la $sesionoperationSession");
-    print("put:$operationSession");
-    final response = await http.put(
-        Uri.parse("$baseUrl/operation_level/$username/$operationSession/"),
+
+    final additionResponse = await http.put(
+        Uri.parse("$baseUrl/operation_level/$username/addition/"),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
           'Authorization': 'Token $token'
         },
         body: jsonEncode(
-            {"name": operationSession, "level": newLevel, "user": username}));
+            {"name": "addition", "level": newLevel, "user": username}));
 
     // Check the response status code
-    if (response.statusCode == 200) {
-      print('Operation level updated successfully');
+    if (additionResponse.statusCode == 200) {
+      print('Addition updated successfully');
     } else {
-      print('Error updating operation level: ${response.statusCode}');
-      print('Response body: ${response.body}');
+      print('Error updating operation level: ${additionResponse.statusCode}');
+      print('Response body: ${additionResponse.body}');
+    }
+
+    final subtractionResponse = await http.put(
+        Uri.parse("$baseUrl/operation_level/$username/subtraction/"),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Authorization': 'Token $token'
+        },
+        body: jsonEncode(
+            {"name": "subtraction", "level": newLevel, "user": username}));
+
+    // Check the response status code
+    if (subtractionResponse.statusCode == 200) {
+      print('Subtraction updated successfully');
+    } else {
+      print('Error updating operation level: ${subtractionResponse.statusCode}');
+      print('Response body: ${subtractionResponse.body}');
+    }
+
+    final multiplicationResponse = await http.put(
+        Uri.parse("$baseUrl/operation_level/$username/multiplication/"),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Authorization': 'Token $token'
+        },
+        body: jsonEncode(
+            {"name": "multiplication", "level": newLevel, "user": username}));
+
+    // Check the response status code
+    if (multiplicationResponse.statusCode == 200) {
+      print('Multiplication updated successfully');
+    } else {
+      print('Error updating operation level: ${multiplicationResponse.statusCode}');
+      print('Response body: ${multiplicationResponse.body}');
+    }
+
+    final divisionResponse = await http.put(
+        Uri.parse("$baseUrl/operation_level/$username/division/"),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Authorization': 'Token $token'
+        },
+        body: jsonEncode(
+            {"name": "division", "level": newLevel, "user": username}));
+
+    // Check the response status code
+    if (divisionResponse.statusCode == 200) {
+      print('Division updated successfully');
+    } else {
+      print('Error updating operation level: ${divisionResponse.statusCode}');
+      print('Response body: ${divisionResponse.body}');
+    }
+  }
+
+  Future<void> updateAllUserInfoInAPI(String baseUrl, String token, String username, int additionLevel, int subtractionLevel, int multiplicationLevel, int divisionLevel) async {
+    final additionResponse = await http.put(
+        Uri.parse("$baseUrl/operation_level/$username/addition/"),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Authorization': 'Token $token'
+        },
+        body: jsonEncode(
+            {"name": "addition", "level": additionLevel, "user": username}));
+
+    // Check the response status code
+    if (additionResponse.statusCode == 200) {
+      print('Addition updated successfully');
+    } else {
+      print('Error updating operation level: ${additionResponse.statusCode}');
+      print('Response body: ${additionResponse.body}');
+    }
+
+    final subtractionResponse = await http.put(
+        Uri.parse("$baseUrl/operation_level/$username/subtraction/"),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Authorization': 'Token $token'
+        },
+        body: jsonEncode(
+            {"name": "subtraction", "level": subtractionLevel, "user": username}));
+
+    // Check the response status code
+    if (subtractionResponse.statusCode == 200) {
+      print('Subtraction updated successfully');
+    } else {
+      print('Error updating operation level: ${subtractionResponse.statusCode}');
+      print('Response body: ${subtractionResponse.body}');
+    }
+
+    final multiplicationResponse = await http.put(
+        Uri.parse("$baseUrl/operation_level/$username/multiplication/"),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Authorization': 'Token $token'
+        },
+        body: jsonEncode(
+            {"name": "multiplication", "level": multiplicationLevel, "user": username}));
+
+    // Check the response status code
+    if (multiplicationResponse.statusCode == 200) {
+      print('Multiplication updated successfully');
+    } else {
+      print('Error updating operation level: ${multiplicationResponse.statusCode}');
+      print('Response body: ${multiplicationResponse.body}');
+    }
+
+    final divisionResponse = await http.put(
+        Uri.parse("$baseUrl/operation_level/$username/division/"),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Authorization': 'Token $token'
+        },
+        body: jsonEncode(
+            {"name": "division", "level": divisionLevel, "user": username}));
+
+    // Check the response status code
+    if (divisionResponse.statusCode == 200) {
+      print('Division updated successfully');
+    } else {
+      print('Error updating operation level: ${divisionResponse.statusCode}');
+      print('Response body: ${divisionResponse.body}');
     }
   }
 

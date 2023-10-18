@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:math_playground/domain/models/operation_level.dart';
 
+
 class MathUseCase {
   int add(int a, int b) => a + b;
   int subtract(int a, int b) => a - b;
@@ -13,6 +14,7 @@ class MathUseCase {
 
   List<String> startSession(
       List<OperationLevel> opLevel, String operationSession) {
+    
     print(operationSession);
     // check if opLevel is empty
     int indexOperation = 0;
@@ -50,7 +52,8 @@ class MathUseCase {
     return [];
   }
 
-  List<String> createAdditionQuestions(int operationLevel) {
+  List<String> createAdditionQuestions(
+      int operationLevel) {
     final Random random = Random();
     List<String> questions = [];
 
@@ -132,7 +135,7 @@ class MathUseCase {
   // did levelup?
   int checkPerformance(int score, int questions, int time) {
     final double percentage = score / questions;
-    if (percentage >= 0.8 && time <= 30) {
+    if (percentage >= 0.8 && time <= 60) {
       // Level up
       print("Te demoraste:" + time.toString() + "Pasaste de Nivel!");
       return 1;
@@ -145,7 +148,8 @@ class MathUseCase {
     }
   }
 
-  List<String> createSubtractionQuestions(int operationLevel) {
+  List<String> createSubtractionQuestions(
+      int operationLevel) {
     final Random random = Random();
     List<String> questions = [];
 
@@ -182,7 +186,8 @@ class MathUseCase {
     return questions;
   }
 
-  List<String> createMultiplicationQuestions(int operationLevel) {
+  List<String> createMultiplicationQuestions(
+      int operationLevel) {
     final Random random = Random();
     List<String> questions = [];
 
@@ -208,7 +213,8 @@ class MathUseCase {
     return questions;
   }
 
-  List<String> createDivisionQuestions(int operationLevel) {
+  List<String> createDivisionQuestions(
+      int operationLevel) {
     final Random random = Random();
     List<String> questions = [];
 
